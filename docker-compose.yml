@@ -1,3 +1,11 @@
+local:
+#  image: wemeep/wemeep-session-service
+  image: sessionsservice
+  ports:
+    - "4567:4567"
+  links:
+    - postgre:dbsession
+
 postgre:
   image: wnameless/postgresql-phppgadmin
   ports:
@@ -14,12 +22,3 @@ postgre:
     - PG_PASS
   cap_add:
     - SYS_RESOURCE
-
-local:
-  image: wemeep/wemeep-session-service
-#  image: sessionsservice
-  ports:
-    - "4567:4567"
-    - "8080:49162"
-  links:
-    - postgre:dbsession

@@ -18,11 +18,28 @@ Set:
 #### Exposed ports
 ```
 - PhpPgAdmin: 49161/phppgadmin
+- API: 4567
 ```
 
 ### WebService
 The web service exposes the following methods:
 
+- Validate a token with `POST`:
+
+```
+http://host:4567/validatetoken/
+
+Data: { body: { token:<someUsername>, userId:<someEmail>, ... } }
+Returns { "valid": true|false }
+```
+- Generate a token with `POST`:
+
+```
+http://host:4567/generatetoken/
+
+Data: { body: { token:<someUsername>, userId:<someEmail>, ... } }
+Returns { "token": <someToken> }
+```
 ### Data model
 #### Objects
 ##### Session
