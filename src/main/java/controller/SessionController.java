@@ -24,7 +24,7 @@ public class SessionController {
             return contr.getUserToken(username);
         }
         String ret =  new BigInteger(130, random).toString(32);
-        contr.insertToken(ret, username, userId, deviceId, new Timestamp(new java.util.Date().getTime()));
+        contr.insertToken(ret, username, userId, deviceId, new Timestamp(new java.util.Date().getTime() + 1000 * 3600 * 24 * 30));
         return ret;
     }
 
