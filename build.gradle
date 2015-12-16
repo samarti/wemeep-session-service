@@ -22,5 +22,5 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     compile 'com.sparkjava:spark-core:2.3'
     compile 'com.google.code.gson:gson:1.7.2'
-    compile 'org.springframework:spring-jdbc:4.2.3'
+    compile 'org.postgresql:postgresql:9.4-1206-jdbc42'
 }

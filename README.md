@@ -29,6 +29,7 @@ The web service exposes the following methods:
 |  Field      |  Values   |
 | :---------- | :-------- |
 | userId      | String    |
+| username      | String    |
 | id          | Number    |
 | deviceId    | String    |
 | token       | String    |
