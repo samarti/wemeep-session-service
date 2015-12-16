@@ -1,5 +1,7 @@
 package controller;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
@@ -11,11 +13,17 @@ public class DBController {
 
     private static Connection c;
     public void init(){
+        InetAddress dbAddr = null;
+        try {
+            dbAddr = InetAddress.getByName("dbsession");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         c = null;
         try {
             Class.forName("org.postgresql.Driver");
             c = DriverManager
-                    .getConnection("jdbc:postgresql://dbsession:49162/postgres",
+                    .getConnection("jdbc:postgresql://" + dbAddr.getHostAddress() + ":5432/postgres",
                             "postgres", "postgres");
             Statement stmt = c.createStatement();
             String sessionTable = "create table if not exists sessions (id SERIAL primary key, userId char(50) unique not null," +
