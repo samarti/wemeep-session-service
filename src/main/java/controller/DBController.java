@@ -12,7 +12,15 @@ import java.text.SimpleDateFormat;
 public class DBController {
 
     private static Connection c;
-    public void init(){
+
+    public void init() {
+
+        try {
+            Thread.sleep(10 * 1000);
+        } catch(InterruptedException e){
+            e.getMessage();
+        }
+        
         InetAddress dbAddr = null;
         try {
             dbAddr = InetAddress.getByName("dbsession");
@@ -31,12 +39,12 @@ public class DBController {
             stmt.execute(sessionTable);
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
     }
 
-    public boolean tokenExists(String tkn){
+    public boolean tokenExists(String tkn) {
         try {
             Statement stmt = c.createStatement();
             String get = "select * from sessions where username = \'" + tkn + "\';";
@@ -44,13 +52,13 @@ public class DBController {
             return set.next();
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
             return false;
         }
     }
 
-    public String getUserToken(String username){
+    public String getUserToken(String username) {
         try {
             Statement stmt = c.createStatement();
             String get = "select token from sessions where username = \'" + username + "\';";
@@ -59,38 +67,38 @@ public class DBController {
             return set.getString("token");
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
             return "";
         }
     }
 
-    public Timestamp getTokenExpiration(String token){
+    public Timestamp getTokenExpiration(String token) {
         try {
             Timestamp expire = null;
             Statement stmt = c.createStatement();
             String get = "select tokenExpiration from sessions where token = \'" + token + "\';";
             ResultSet set = stmt.executeQuery(get);
-            while(set.next()){
+            while (set.next()) {
                 expire = set.getTimestamp("tokenExpiration");
                 break;
             }
             return expire;
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
             return null;
         }
     }
 
-    public void insertToken(String token, String username, String userId, String deviceId, Timestamp expire){
+    public void insertToken(String token, String username, String userId, String deviceId, Timestamp expire) {
         try {
             String s = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(expire);
             String insert = "";
-            if(!userExistsInDB(username)){
+            if (!userExistsInDB(username)) {
                 insert = String.format("insert into sessions (userId, username, deviceId, token, tokenExpiration) values ('%s','%s','%s','%s','%s')"
-                        ,userId, username, deviceId, token, s);
+                        , userId, username, deviceId, token, s);
             } else {
                 insert = String.format("update sessions set token = '%s', tokenExpiration = '%s' where username = '%s'", token, s, username);
             }
@@ -98,12 +106,12 @@ public class DBController {
             stmt.execute(insert);
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
     }
 
-    public boolean userExistsInDB(String username){
+    public boolean userExistsInDB(String username) {
         try {
             Statement stmt = c.createStatement();
             String get = "select * from sessions where username = \'" + username + "\';";
@@ -111,7 +119,7 @@ public class DBController {
             return set.next();
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
             return false;
         }
