@@ -27,7 +27,7 @@ public class Server {
          */
         post("/validatetoken", (request, response) -> {
             Session retMap = new Gson().fromJson(request.body(), Session.class);
-            boolean valid = SessionController.isTokenValid(retMap.sessionToken);
+            boolean valid = SessionController.isTokenValid(retMap.token);
             JsonObject res = new JsonObject();
             res.addProperty("valid", valid);
             response.body(res.toString());
@@ -42,8 +42,8 @@ public class Server {
             JsonObject res = new JsonObject();
             String user = retMap.username;
             String password = "";
-            String userid =  retMap.userId;
-            String deviceId = retMap.deviceId;
+            String userid =  retMap.userid;
+            String deviceId = retMap.deviceid;
             res.addProperty("token", SessionController.getToken(user, password, userid, deviceId));
             response.body(res.toString());
             return response.body();

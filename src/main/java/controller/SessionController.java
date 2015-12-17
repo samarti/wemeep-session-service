@@ -3,6 +3,7 @@ package controller;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
+import java.util.Calendar;
 
 /**
  * Created by santiagomarti on 12/15/15.
@@ -24,7 +25,9 @@ public class SessionController {
             return contr.getUserToken(username);
         }
         String ret =  new BigInteger(130, random).toString(32);
-        contr.insertToken(ret, username, userId, deviceId, new Timestamp(new java.util.Date().getTime() + 1000 * 3600 * 24 * 30));
+        Calendar cal = Calendar.getInstance(); // will be equal to now
+        cal.add(Calendar.DAY_OF_YEAR, 40 * 7);
+        contr.insertToken(ret, username, userId, deviceId, new Timestamp(cal.getTimeInMillis()));
         return ret;
     }
 

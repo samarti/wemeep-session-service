@@ -32,6 +32,7 @@ public class DBController {
             Class.forName("org.postgresql.Driver");
             c = DriverManager
                     .getConnection("jdbc:postgresql://" + dbAddr.getHostAddress() + ":5432/postgres",
+                    //.getConnection("jdbc:postgresql://192.168.99.100:49162/postgres",
                             "postgres", "postgres");
             Statement stmt = c.createStatement();
             String sessionTable = "create table if not exists sessions (id SERIAL primary key, userId char(50) unique not null," +
@@ -64,7 +65,7 @@ public class DBController {
             String get = "select token from sessions where username = \'" + username + "\';";
             ResultSet set = stmt.executeQuery(get);
             set.next();
-            return set.getString("token");
+            return set.getString("token").trim();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -94,7 +95,7 @@ public class DBController {
 
     public void insertToken(String token, String username, String userId, String deviceId, Timestamp expire) {
         try {
-            String s = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(expire);
+            String s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(expire);
             String insert = "";
             if (!userExistsInDB(username)) {
                 insert = String.format("insert into sessions (userId, username, deviceId, token, tokenExpiration) values ('%s','%s','%s','%s','%s')"
