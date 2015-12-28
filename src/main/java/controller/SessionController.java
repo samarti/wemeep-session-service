@@ -20,7 +20,7 @@ public class SessionController {
      * @param password
      * @return
      */
-    public static String getToken(String username, String password, String userId, String deviceId ){
+    public static String getToken(String username, String password, String userId, String deviceId, String gcmId){
         DBController contr = new DBController();
         SecureRandom random = new SecureRandom();
         if(tokenExists(username) && isTokenValid(contr.getUserToken(username))){
@@ -29,7 +29,7 @@ public class SessionController {
         String ret =  new BigInteger(130, random).toString(32);
         Calendar cal = Calendar.getInstance(); // will be equal to now
         cal.add(Calendar.DAY_OF_YEAR, 40 * 7);
-        contr.insertToken(ret, username, userId, deviceId, new Timestamp(cal.getTimeInMillis()));
+        contr.insertToken(ret, username, userId, deviceId, new Timestamp(cal.getTimeInMillis()), gcmId);
         return ret;
     }
 
@@ -59,8 +59,8 @@ public class SessionController {
         return contr.getPosition(username);
     }
 
-    public static boolean updatePosition(String username, double lat, double longi){
+    public static boolean updatePosition(String username, double lat, double longi, String gcmId){
         DBController contr = new DBController();
-        return contr.updatePosition(username, lat, longi);
+        return contr.updatePosition(username, lat, longi, gcmId);
     }
 }

@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  */
 public class Session {
 
-    public String token, deviceid, id, username;
+    public String token, deviceid, id, username, gcmid;
     public Timestamp expirationDate;
     public double latitude, longitude;
 

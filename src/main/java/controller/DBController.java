@@ -38,7 +38,8 @@ public class DBController {
                             "postgres", "postgres");
             Statement stmt = c.createStatement();
             String sessionTable = "create table if not exists sessions (id SERIAL primary key, userId char(50) unique not null," +
-                    " username char(20) unique not null, deviceId char(50) not null, token char(50) unique not null, tokenExpiration Timestamp not null, latitude double precision, longitude double precision)";
+                    " username char(20) unique not null, deviceId char(50) not null, token char(50) unique not null, tokenExpiration Timestamp not null, latitude double precision, longitude double precision" +
+                    ", gcmId char (257) unique)";
             stmt.execute(sessionTable);
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,15 +92,15 @@ public class DBController {
         }
     }
 
-    public void insertToken(String token, String username, String userId, String deviceId, Timestamp expire) {
+    public void insertToken(String token, String username, String userId, String deviceId, Timestamp expire, String gcmId) {
         try {
             String s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(expire);
             String insert = "";
             if (!userExistsInDB(username)) {
-                insert = String.format("insert into sessions (userId, username, deviceId, token, tokenExpiration) values ('%s','%s','%s','%s','%s')"
-                        , userId, username, deviceId, token, s);
+                insert = String.format("insert into sessions (userId, username, deviceId, token, tokenExpiration, gcmId) values ('%s','%s','%s','%s','%s', '%s')"
+                        , userId, username, deviceId, token, s, gcmId);
             } else {
-                insert = String.format("update sessions set token = '%s', tokenExpiration = '%s' where username = '%s'", token, s, username);
+                insert = String.format("update sessions set token = '%s', tokenExpiration = '%s', gcmId = '%s' where username = '%s'", token, s, gcmId, username);
             }
             Statement stmt = c.createStatement();
             stmt.execute(insert);
@@ -136,9 +137,9 @@ public class DBController {
         }
     }
 
-    public boolean updatePosition(String username, double lat, double longi){
+    public boolean updatePosition(String username, double lat, double longi, String gcmId){
         try {
-            String update = "update sessions set latitude = " + lat + ", longitude = " + longi + " where username = \'" + username + "\'";
+            String update = "update sessions set latitude = " + lat + ", longitude = " + longi + ", gcmId = \'" + gcmId + "\' where username = \'" + username + "\'";
             Statement stmt = c.createStatement();
             stmt.execute(update);
             return true;

@@ -71,6 +71,7 @@ Returns { "token": <someToken> }
 | tokenExpiration | Timestamp|
 | latitude    | Decimal |
 | longitude   | Decimal |
+| gcmid       | String  |
 
 ## TODO
 - Add authentication to the database

@@ -47,10 +47,11 @@ public class Server {
             String password = "";
             String userid =  retMap.id;
             String deviceId = retMap.deviceid;
-            if(user != null)
-                res.addProperty("token", SessionController.getToken(user, password, userid, deviceId));
+            String gcmId = retMap.gcmid;
+            if(user != null && gcmId != null && deviceId != null)
+                res.addProperty("token", SessionController.getToken(user, password, userid, deviceId, gcmId));
             else
-                res.addProperty("Error", "Missing fields");
+                res.addProperty("Error", "Missing fields. Req: username, deviceid and gcmid");
             response.body(res.toString());
             return response.body();
         });
@@ -75,7 +76,11 @@ public class Server {
             String username = retMap.username;
             Double lat = retMap.latitude;
             Double longi = retMap.longitude;
-            res.addProperty("Result", SessionController.updatePosition(username, lat, longi));
+            String gcmId = retMap.gcmid;
+            if(lat != null && longi != null && gcmId != null)
+                res.addProperty("Result", SessionController.updatePosition(username, lat, longi, gcmId));
+            else
+                res.addProperty("Error", "Missing fields. Lat, longi and gcmId required");
             response.body(res.toString());
             return response.body();
         });
