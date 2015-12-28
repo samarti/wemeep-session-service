@@ -1,6 +1,6 @@
 package controller;
 
-import com.sun.tools.javac.util.Pair;
+import model.Position;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -54,7 +54,7 @@ public class SessionController {
         return expire.after(new Timestamp(new java.util.Date().getTime()));
     }
 
-    public static Pair<Double, Double> getPosition(String username){
+    public static Position getPosition(String username){
         DBController contr = new DBController();
         return contr.getPosition(username);
     }

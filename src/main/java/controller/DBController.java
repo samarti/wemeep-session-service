@@ -1,6 +1,6 @@
 package controller;
 
-import com.sun.tools.javac.util.Pair;
+import model.Position;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -122,13 +122,13 @@ public class DBController {
         }
     }
 
-    public Pair<Double, Double> getPosition(String username){
+    public Position getPosition(String username){
         try {
             Statement stmt = c.createStatement();
             String get = "select latitude, longitude from sessions where username = \'" + username + "\';";
             ResultSet set = stmt.executeQuery(get);
             set.next();
-            return new Pair<>(set.getDouble(1), set.getDouble(2));
+            return new Position(set.getDouble(1), set.getDouble(2));
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());

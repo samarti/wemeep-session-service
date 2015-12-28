@@ -2,14 +2,12 @@ package api;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.sun.tools.javac.util.Pair;
 import controller.DBController;
 import controller.SessionController;
+import model.Position;
 import model.Session;
 
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.put;
+import static spark.Spark.*;
 
 /**
  * Created by santiagomarti on 12/14/15.
@@ -61,10 +59,10 @@ public class Server {
             Session retMap = new Gson().fromJson(request.body(), Session.class);
             JsonObject res = new JsonObject();
             String username =  retMap.username;
-            Pair<Double, Double> pos = SessionController.getPosition(username);
+            Position pos = SessionController.getPosition(username);
             if(pos != null){
-                res.addProperty("latitude", pos.fst);
-                res.addProperty("longitude", pos.snd);
+                res.addProperty("latitude", pos.lat);
+                res.addProperty("longitude", pos.longi);
             } else
                 res.addProperty("Error", "Invalid username?");
             response.body(res.toString());
