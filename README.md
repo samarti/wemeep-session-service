@@ -29,7 +29,7 @@ The web service exposes the following methods:
 ```
 http://host:4567/validatetoken/
 
-Data: { body: { token:<someUsername>, userId:<someEmail>, ... } }
+Data: { body: { token:<someToken>, userId:<someId>, ... } }
 Returns { "valid": true|false }
 ```
 - Generate a token with `POST`:
@@ -37,9 +37,27 @@ Returns { "valid": true|false }
 ```
 http://host:4567/generatetoken/
 
-Data: { body: { token:<someUsername>, userId:<someEmail>, ... } }
+Data: { body: { token:<someToken>, userId:<someId>, ... } }
+Returns { "token": <someToken> }
+
+```
+- Get a user last known position with `GET`:
+
+```
+http://host:4567/position/
+
+Data: { body: { token:<someToken>, userId:<someId> } }
 Returns { "token": <someToken> }
 ```
+- Update a user position with `PUT`:
+
+```
+http://host:4567/position/
+
+Data: { body: { token:<someToken>, deviceid:<someId>, userId:<someId>, latitude:<someDecimal>, longitude:<someDecimal> } }
+Returns { "token": <someToken> }
+```
+
 ### Data model
 #### Objects
 ##### Session
@@ -51,6 +69,8 @@ Returns { "token": <someToken> }
 | deviceId    | String    |
 | token       | String    |
 | tokenExpiration | Timestamp|
+| latitude    | Decimal |
+| longitude   | Decimal |
 
 ## TODO
 - Add authentication to the database

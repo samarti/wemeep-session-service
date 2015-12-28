@@ -1,5 +1,7 @@
 package controller;
 
+import com.sun.tools.javac.util.Pair;
+
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
@@ -52,4 +54,13 @@ public class SessionController {
         return expire.after(new Timestamp(new java.util.Date().getTime()));
     }
 
+    public static Pair<Double, Double> getPosition(String username){
+        DBController contr = new DBController();
+        return contr.getPosition(username);
+    }
+
+    public static boolean updatePosition(String username, double lat, double longi){
+        DBController contr = new DBController();
+        return contr.updatePosition(username, lat, longi);
+    }
 }

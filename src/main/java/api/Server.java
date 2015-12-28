@@ -2,12 +2,14 @@ package api;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.sun.tools.javac.util.Pair;
 import controller.DBController;
 import controller.SessionController;
 import model.Session;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.put;
 
 /**
  * Created by santiagomarti on 12/14/15.
@@ -27,9 +29,12 @@ public class Server {
          */
         post("/validatetoken", (request, response) -> {
             Session retMap = new Gson().fromJson(request.body(), Session.class);
-            boolean valid = SessionController.isTokenValid(retMap.token);
             JsonObject res = new JsonObject();
-            res.addProperty("valid", valid);
+            if(retMap.token != null) {
+                boolean valid = SessionController.isTokenValid(retMap.token);
+                res.addProperty("valid", valid);
+            } else
+                res.addProperty("Erorr", "Missing fields");
             response.body(res.toString());
             return response.body();
         });
@@ -42,9 +47,37 @@ public class Server {
             JsonObject res = new JsonObject();
             String user = retMap.username;
             String password = "";
-            String userid =  retMap.userid;
+            String userid =  retMap.id;
             String deviceId = retMap.deviceid;
-            res.addProperty("token", SessionController.getToken(user, password, userid, deviceId));
+            if(user != null)
+                res.addProperty("token", SessionController.getToken(user, password, userid, deviceId));
+            else
+                res.addProperty("Error", "Missing fields");
+            response.body(res.toString());
+            return response.body();
+        });
+
+        get("/position", (request, response) -> {
+            Session retMap = new Gson().fromJson(request.body(), Session.class);
+            JsonObject res = new JsonObject();
+            String username =  retMap.username;
+            Pair<Double, Double> pos = SessionController.getPosition(username);
+            if(pos != null){
+                res.addProperty("latitude", pos.fst);
+                res.addProperty("longitude", pos.snd);
+            } else
+                res.addProperty("Error", "Invalid username?");
+            response.body(res.toString());
+            return response.body();
+        });
+
+        put("/position", (request, response) -> {
+            Session retMap = new Gson().fromJson(request.body(), Session.class);
+            JsonObject res = new JsonObject();
+            String username = retMap.username;
+            Double lat = retMap.latitude;
+            Double longi = retMap.longitude;
+            res.addProperty("Result", SessionController.updatePosition(username, lat, longi));
             response.body(res.toString());
             return response.body();
         });

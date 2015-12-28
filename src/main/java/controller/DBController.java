@@ -1,5 +1,7 @@
 package controller;
 
+import com.sun.tools.javac.util.Pair;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.*;
@@ -36,12 +38,11 @@ public class DBController {
                             "postgres", "postgres");
             Statement stmt = c.createStatement();
             String sessionTable = "create table if not exists sessions (id SERIAL primary key, userId char(50) unique not null," +
-                    " username char(20) unique not null, deviceId char(50) not null, token char(50) unique not null, tokenExpiration Timestamp not null)";
+                    " username char(20) unique not null, deviceId char(50) not null, token char(50) unique not null, tokenExpiration Timestamp not null, latitude double precision, longitude double precision)";
             stmt.execute(sessionTable);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
         }
     }
 
@@ -54,7 +55,6 @@ public class DBController {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
             return false;
         }
     }
@@ -69,7 +69,6 @@ public class DBController {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
             return "";
         }
     }
@@ -88,7 +87,6 @@ public class DBController {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
             return null;
         }
     }
@@ -108,7 +106,6 @@ public class DBController {
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
         }
     }
 
@@ -121,7 +118,33 @@ public class DBController {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
+            return false;
+        }
+    }
+
+    public Pair<Double, Double> getPosition(String username){
+        try {
+            Statement stmt = c.createStatement();
+            String get = "select latitude, longitude from sessions where username = \'" + username + "\';";
+            ResultSet set = stmt.executeQuery(get);
+            set.next();
+            return new Pair<>(set.getDouble(1), set.getDouble(2));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return null;
+        }
+    }
+
+    public boolean updatePosition(String username, double lat, double longi){
+        try {
+            String update = "update sessions set latitude = " + lat + ", longitude = " + longi + " where username = \'" + username + "\'";
+            Statement stmt = c.createStatement();
+            stmt.execute(update);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
     }
