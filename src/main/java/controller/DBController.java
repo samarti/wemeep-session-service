@@ -123,10 +123,10 @@ public class DBController {
         }
     }
 
-    public Position getPosition(String username){
+    public Position getPosition(String id){
         try {
             Statement stmt = c.createStatement();
-            String get = "select latitude, longitude from sessions where username = \'" + username + "\';";
+            String get = "select latitude, longitude from sessions where id = \'" + id + "\';";
             ResultSet set = stmt.executeQuery(get);
             set.next();
             return new Position(set.getDouble(1), set.getDouble(2));
@@ -137,9 +137,9 @@ public class DBController {
         }
     }
 
-    public boolean updatePosition(String username, double lat, double longi, String gcmId){
+    public boolean updatePosition(String id, String username, double lat, double longi, String gcmId){
         try {
-            String update = "update sessions set latitude = " + lat + ", longitude = " + longi + ", gcmId = \'" + gcmId + "\' where username = \'" + username + "\'";
+            String update = "update sessions set latitude = " + lat + ", longitude = " + longi + ", gcmId = '" + gcmId +  "', username = '" + username + "' where userId = '" + id + "'";
             Statement stmt = c.createStatement();
             stmt.execute(update);
             return true;

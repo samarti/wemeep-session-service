@@ -54,13 +54,16 @@ public class SessionController {
         return expire.after(new Timestamp(new java.util.Date().getTime()));
     }
 
-    public static Position getPosition(String username){
+    public static Position getPosition(String id){
         DBController contr = new DBController();
-        return contr.getPosition(username);
+        Position ret = contr.getPosition(id);
+        if(ret.longi == 0.0 && ret.lat == 0.0)
+            return null;
+        return ret;
     }
 
-    public static boolean updatePosition(String username, double lat, double longi, String gcmId){
+    public static boolean updatePosition(String id, String username, double lat, double longi, String gcmId){
         DBController contr = new DBController();
-        return contr.updatePosition(username, lat, longi, gcmId);
+        return contr.updatePosition(id, username, lat, longi, gcmId);
     }
 }

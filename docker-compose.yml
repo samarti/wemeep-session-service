@@ -1,24 +1,23 @@
-#local:
-#  image: wemeep/wemeep-session-service
-#  image: sessionsservice
-#  ports:
-#    - "4567:4567"
-#  links:
-#    - postgre:dbsession
+local:
+  image: wemeep/wemeep-session-service
+#image: sessionsservice
+  ports:
+    - "4567:4567"
+  links:
+    - postgre:dbsession
 
 postgre:
   image: wnameless/postgresql-phppgadmin
-  ports:
-    - "49161:80"
-    - "49160:22"
-    - "49162:5432"
   restart: always
   privileged: true
   container_name: db
+  ports:
+    - "49160:22"
+    - "49161:80"
+    - "49162:5432"
   volumes:
     - ./sessionData:/data
   environment:
-    - PG_USER
     - PG_PASS
   cap_add:
     - SYS_RESOURCE

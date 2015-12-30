@@ -59,13 +59,13 @@ public class Server {
         get("/position", (request, response) -> {
             Session retMap = new Gson().fromJson(request.body(), Session.class);
             JsonObject res = new JsonObject();
-            String username =  retMap.username;
-            Position pos = SessionController.getPosition(username);
+            String id =  retMap.id;
+            Position pos = SessionController.getPosition(id);
             if(pos != null){
                 res.addProperty("latitude", pos.lat);
                 res.addProperty("longitude", pos.longi);
             } else
-                res.addProperty("Error", "Invalid username?");
+                res.addProperty("Error", "Invalid id or position has not been set for that id");
             response.body(res.toString());
             return response.body();
         });
@@ -74,13 +74,13 @@ public class Server {
             Session retMap = new Gson().fromJson(request.body(), Session.class);
             JsonObject res = new JsonObject();
             String username = retMap.username;
-            Double lat = retMap.latitude;
-            Double longi = retMap.longitude;
+            Double lat = retMap.lat;
+            Double longi = retMap.longi;
             String gcmId = retMap.gcmid;
-            if(lat != null && longi != null && gcmId != null)
-                res.addProperty("Result", SessionController.updatePosition(username, lat, longi, gcmId));
+            if(lat != null && longi != null && gcmId != null && retMap.id != null && retMap.username != null)
+                res.addProperty("Success", SessionController.updatePosition(retMap.id, username, lat, longi, gcmId));
             else
-                res.addProperty("Error", "Missing fields. Lat, longi and gcmId required");
+                res.addProperty("Error", "Missing fields. id, username, lat, longi and gcmid required");
             response.body(res.toString());
             return response.body();
         });
