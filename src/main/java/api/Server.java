@@ -65,7 +65,7 @@ public class Server {
                 res.addProperty("latitude", pos.lat);
                 res.addProperty("longitude", pos.longi);
             } else
-                res.addProperty("Error", "Invalid id or position has not been set for that id");
+                res.addProperty("Error", "Invalid userId or position has not been set for that userId");
             response.body(res.toString());
             return response.body();
         });
