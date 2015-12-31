@@ -113,7 +113,7 @@ public class DBController {
     public boolean userExistsInDB(String id) {
         try {
             Statement stmt = c.createStatement();
-            String get = "select * from sessions where id = \'" + id + "\';";
+            String get = "select * from sessions where userId = \'" + id + "\';";
             ResultSet set = stmt.executeQuery(get);
             return set.next();
         } catch (Exception e) {
@@ -126,7 +126,7 @@ public class DBController {
     public Position getPosition(String id){
         try {
             Statement stmt = c.createStatement();
-            String get = "select latitude, longitude from sessions where id = \'" + id + "\';";
+            String get = "select latitude, longitude from sessions where userId = \'" + id + "\';";
             ResultSet set = stmt.executeQuery(get);
             set.next();
             return new Position(set.getDouble(1), set.getDouble(2));
