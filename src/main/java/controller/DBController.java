@@ -170,6 +170,7 @@ public class DBController {
             String select = "select deviceId, username, gcmId, latitude, longitude from sessions where userId = '" + id + "'";
             Statement stmt = c.createStatement();
             ResultSet set = stmt.executeQuery(select);
+            set.next();
             return new Session(null, set.getString(1), id, set.getString(2), set.getString(3), null, set.getDouble(4), set.getDouble(5));
         } catch (SQLException e){
             e.printStackTrace();
