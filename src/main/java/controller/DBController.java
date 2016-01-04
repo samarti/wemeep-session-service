@@ -171,7 +171,7 @@ public class DBController {
             Statement stmt = c.createStatement();
             ResultSet set = stmt.executeQuery(select);
             set.next();
-            return new Session(null, set.getString(1), id, set.getString(2), set.getString(3), null, set.getDouble(4), set.getDouble(5));
+            return new Session(null, set.getString(1).trim(), id, set.getString(2).trim(), set.getString(3).trim(), null, set.getDouble(4), set.getDouble(5));
         } catch (SQLException e){
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
