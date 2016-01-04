@@ -1,6 +1,7 @@
 package controller;
 
 import model.Position;
+import model.Session;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -161,6 +162,19 @@ public class DBController {
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 return false;
             }
+        }
+    }
+
+    public Session buildSession(String id){
+        try {
+            String select = "select deviceId, token, latitude, longitude, gcmId from sessions where userId = " + id;
+            Statement stmt = c.createStatement();
+            ResultSet set = stmt.executeQuery(select);
+            return new Session(null, null, set.getString(1), set.getString(2), set.getString(3), null, set.getDouble(4), set.getDouble(5));
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return null;
         }
     }
 }

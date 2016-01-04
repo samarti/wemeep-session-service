@@ -81,6 +81,22 @@ public class Server {
             response.body(res.toString());
             return response.body();
         });
+
+        get("/session/:id", (request, response) -> {
+            String id = request.params(":id");
+            JsonObject res = new JsonObject();
+            Session ses = SessionController.buildSession(id);
+            if(ses != null){
+                res.addProperty("latitude", ses.lat);
+                res.addProperty("longitude", ses.longi);
+                res.addProperty("username", ses.username);
+                res.addProperty("userId", ses.id);
+                res.addProperty("gcmId", ses.gcmid);
+            } else
+                res.addProperty("Error", "Invalid userId");
+            response.body(res.toString());
+            return response.body();
+        });
     }
 
 }

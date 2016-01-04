@@ -57,6 +57,13 @@ http://host:4567/position/
 Data: { body: { token:<someToken>, deviceid:<someId>, userId:<someId>, latitude:<someDecimal>, longitude:<someDecimal> } }
 Returns { "token": <someToken> }
 ```
+- Get a user session with `GET`:
+
+```
+http://host:4567/session/id
+
+Returns { <sessionJson> }
+```
 
 ### Data model
 #### Objects

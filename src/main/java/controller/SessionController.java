@@ -1,6 +1,7 @@
 package controller;
 
 import model.Position;
+import model.Session;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -65,5 +66,10 @@ public class SessionController {
     public static boolean updatePosition(String id, String username, double lat, double longi, String gcmId){
         DBController contr = new DBController();
         return contr.updatePosition(id, username, lat, longi, gcmId);
+    }
+
+    public static Session buildSession(String id){
+        DBController contr = new DBController();
+        return contr.buildSession(id);
     }
 }
