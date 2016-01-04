@@ -167,10 +167,10 @@ public class DBController {
 
     public Session buildSession(String id){
         try {
-            String select = "select deviceId, token, latitude, longitude, gcmId from sessions where userId = " + id;
+            String select = "select deviceId, username, gcmId, latitude, longitude from sessions where userId = '" + id + "'";
             Statement stmt = c.createStatement();
             ResultSet set = stmt.executeQuery(select);
-            return new Session(null, null, set.getString(1), set.getString(2), set.getString(3), null, set.getDouble(4), set.getDouble(5));
+            return new Session(null, set.getString(1), id, set.getString(2), set.getString(3), null, set.getDouble(4), set.getDouble(5));
         } catch (SQLException e){
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
