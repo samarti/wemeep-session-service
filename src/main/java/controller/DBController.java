@@ -66,8 +66,10 @@ public class DBController {
             Statement stmt = c.createStatement();
             String get = "select token from sessions where username = \'" + username + "\';";
             ResultSet set = stmt.executeQuery(get);
-            set.next();
-            return set.getString("token").trim();
+            if(set.next())
+                return set.getString("token").trim();
+            else
+                return "";
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -77,15 +79,13 @@ public class DBController {
 
     public Timestamp getTokenExpiration(String token) {
         try {
-            Timestamp expire = null;
             Statement stmt = c.createStatement();
             String get = "select tokenExpiration from sessions where token = \'" + token + "\';";
             ResultSet set = stmt.executeQuery(get);
-            while (set.next()) {
-                expire = set.getTimestamp("tokenExpiration");
-                break;
-            }
-            return expire;
+            if (set.next())
+                return set.getTimestamp("tokenExpiration");
+            else
+                return null;
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -129,8 +129,10 @@ public class DBController {
             Statement stmt = c.createStatement();
             String get = "select latitude, longitude from sessions where userId = \'" + id + "\';";
             ResultSet set = stmt.executeQuery(get);
-            set.next();
-            return new Position(set.getDouble(1), set.getDouble(2));
+            if(set.next())
+                return new Position(set.getDouble(1), set.getDouble(2));
+            else
+                return null;
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -170,8 +172,10 @@ public class DBController {
             String select = "select deviceId, username, gcmId, latitude, longitude from sessions where userId = '" + id + "'";
             Statement stmt = c.createStatement();
             ResultSet set = stmt.executeQuery(select);
-            set.next();
-            return new Session(null, set.getString(1).trim(), id, set.getString(2).trim(), set.getString(3).trim(), null, set.getDouble(4), set.getDouble(5));
+            if(set.next())
+                return new Session(null, set.getString(1).trim(), id, set.getString(2).trim(), set.getString(3).trim(), null, set.getDouble(4), set.getDouble(5));
+            else
+                return null;
         } catch (SQLException e){
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
