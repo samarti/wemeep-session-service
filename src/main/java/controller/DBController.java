@@ -190,7 +190,7 @@ public class DBController {
             Statement stmt = c.createStatement();
             ResultSet set = stmt.executeQuery(select);
             LinkedList<Session> ret = new LinkedList<>();
-            if(set.next())
+            while(set.next())
                 ret.add(new Session(null, null, set.getString(6), set.getString(2).trim(), set.getString(3).trim(), null, set.getDouble(4), set.getDouble(5)));
             return ret;
         } catch (SQLException e){
