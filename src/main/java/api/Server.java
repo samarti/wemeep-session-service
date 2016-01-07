@@ -1,11 +1,16 @@
 package api;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import controller.DBController;
 import controller.SessionController;
+import controller.Utils;
 import model.Position;
 import model.Session;
+
+import java.util.LinkedList;
+import java.util.Map;
 
 import static spark.Spark.*;
 
@@ -95,6 +100,38 @@ public class Server {
             } else
                 res.addProperty("Error", "Invalid userId");
             response.body(res.toString());
+            return response.body();
+        });
+
+        get("/closeusers", (request, response) -> {
+            double lat, longi, radius;
+            try {
+                Map<String, String> data = Utils.splitQuery(request.queryString());
+                lat = Integer.parseInt(data.get("lat"));
+                longi = Integer.parseInt(data.get("longi"));
+                radius = Integer.parseInt(data.get("radius"));
+                if(lat <= 0.0 || longi < 0.0 || radius > 100)
+                    throw new Exception();
+            } catch (Exception e){
+                JsonObject red = new JsonObject();
+                red.addProperty("Error", "Bad arguments. Please provide lat, longi and radious <= 100");
+                response.body(red.toString() + "\n");
+                return response.body();
+            }
+            LinkedList<Session> sessions = SessionController.buildSessions();
+            JsonArray ret = new JsonArray();
+            for(Session ses : sessions){
+                if(Utils.haversine(lat, longi, ses.lat, ses.longi) < radius){
+                    JsonObject aux = new JsonObject();
+                    aux.addProperty("latitude", ses.lat);
+                    aux.addProperty("longitude", ses.longi);
+                    aux.addProperty("username", ses.username);
+                    aux.addProperty("userId", ses.id);
+                    aux.addProperty("gcmId", ses.gcmid);
+                    ret.add(aux);
+                }
+            }
+            response.body(ret.toString());
             return response.body();
         });
     }

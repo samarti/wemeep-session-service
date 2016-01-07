@@ -64,6 +64,13 @@ http://host:4567/session/id
 
 Returns { <sessionJson> }
 ```
+- Get users within a given radius from a position with `GET`:
+
+```
+http://host:4567/closeusers?lat=<some number>&longi=<some number>&radius=<some number>
+
+Returns [{<sessionJson>}, {<sessionJson>}, ...]
+```
 
 ### Data model
 #### Objects

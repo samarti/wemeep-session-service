@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 
 
 /**
@@ -176,6 +177,22 @@ public class DBController {
                 return new Session(null, null, id, set.getString(2).trim(), set.getString(3).trim(), null, set.getDouble(4), set.getDouble(5));
             else
                 return null;
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return null;
+        }
+    }
+
+    public LinkedList<Session> getAllSessions(){
+        try {
+            String select = "select deviceId, username, gcmId, latitude, longitude, userId from sessions where latitude is not null and longitude is not null and username is not null and gcmId is not null and userId is not null ";
+            Statement stmt = c.createStatement();
+            ResultSet set = stmt.executeQuery(select);
+            LinkedList<Session> ret = new LinkedList<>();
+            if(set.next())
+                ret.add(new Session(null, null, set.getString(6), set.getString(2).trim(), set.getString(3).trim(), null, set.getDouble(4), set.getDouble(5)));
+            return ret;
         } catch (SQLException e){
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());

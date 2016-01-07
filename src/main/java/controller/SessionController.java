@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.LinkedList;
 
 /**
  * Created by santiagomarti on 12/15/15.
@@ -71,5 +72,10 @@ public class SessionController {
     public static Session buildSession(String id){
         DBController contr = new DBController();
         return contr.buildSession(id);
+    }
+
+    public static LinkedList<Session> buildSessions(){
+        DBController contr = new DBController();
+        return contr.getAllSessions();
     }
 }
