@@ -110,11 +110,11 @@ public class Server {
                 lat = Integer.parseInt(data.get("lat"));
                 longi = Integer.parseInt(data.get("longi"));
                 radius = Integer.parseInt(data.get("radius"));
-                if(lat <= 0.0 || longi < 0.0 || radius > 100)
+                if(lat == 0.0 || longi == 0.0 || radius > 100)
                     throw new Exception();
             } catch (Exception e){
                 JsonObject red = new JsonObject();
-                red.addProperty("Error", "Bad arguments. Please provide lat, longi and radious <= 100");
+                red.addProperty("Error", "Bad arguments. Please provide lat, longi and radius <= 100");
                 response.body(red.toString() + "\n");
                 return response.body();
             }
