@@ -107,9 +107,9 @@ public class Server {
             double lat, longi, radius;
             try {
                 Map<String, String> data = Utils.splitQuery(request.queryString());
-                lat = Integer.parseInt(data.get("lat"));
-                longi = Integer.parseInt(data.get("longi"));
-                radius = Integer.parseInt(data.get("radius"));
+                lat = Double.parseDouble(data.get("lat"));
+                longi = Double.parseDouble(data.get("longi"));
+                radius = Double.parseDouble(data.get("radius"));
                 if(lat == 0.0 || longi == 0.0 || radius > 100)
                     throw new Exception();
             } catch (Exception e){
