@@ -74,9 +74,9 @@ public class SessionController {
         return contr.deleteSession(deviceId);
     }
 
-    public static LinkedList<Session> buildSession(String deviceid){
+    public static LinkedList<Session> buildSession(String id){
         DBController contr = new DBController();
-        return contr.buildSession(deviceid);
+        return contr.buildSession(id);
     }
 
     public static LinkedList<Session> buildSessions(){

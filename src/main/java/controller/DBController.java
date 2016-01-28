@@ -169,7 +169,7 @@ public class DBController {
     public LinkedList<Session> buildSession(String id){
         try {
             LinkedList<Session> ret = new LinkedList<>();
-            String select = "select deviceId, username, gcmId, latitude, longitude from sessions where deviceId = '" + id + "'";
+            String select = "select deviceId, username, gcmId, latitude, longitude from sessions where userId = '" + id + "'";
             Statement stmt = c.createStatement();
             ResultSet set = stmt.executeQuery(select);
             while(set.next())
