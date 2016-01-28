@@ -87,8 +87,8 @@ public class Server {
             return response.body();
         });
 
-        get("/session/:id", (request, response) -> {
-            String id = request.params(":id");
+        get("/session/:deviceid", (request, response) -> {
+            String id = request.params(":deviceid");
             JsonArray arr = new JsonArray();
             LinkedList<Session> sesArr = SessionController.buildSession(id);
             for(Session ses : sesArr){
