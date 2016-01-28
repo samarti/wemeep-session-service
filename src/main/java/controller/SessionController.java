@@ -64,12 +64,12 @@ public class SessionController {
         return ret;
     }
 
-    public static boolean updatePosition(String id, String username, double lat, double longi, String gcmId){
+    public static boolean updatePosition(String deviceId, String id, String username, double lat, double longi, String gcmId){
         DBController contr = new DBController();
-        return contr.updatePosition(id, username, lat, longi, gcmId);
+        return contr.updatePosition(deviceId, id, username, lat, longi, gcmId);
     }
 
-    public static Session buildSession(String id){
+    public static LinkedList<Session> buildSession(String id){
         DBController contr = new DBController();
         return contr.buildSession(id);
     }

@@ -98,11 +98,11 @@ public class DBController {
         try {
             String s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(expire);
             String insert = "";
-            if (!userExistsInDB(userId)) {
+            if (!deviceIdExistsInDB(deviceId)) {
                 insert = String.format("insert into sessions (userId, username, deviceId, token, tokenExpiration, gcmId) values ('%s','%s','%s','%s','%s', '%s')"
                         , userId, username, deviceId, token, s, gcmId);
             } else {
-                insert = String.format("update sessions set token = '%s', tokenExpiration = '%s', gcmId = '%s' where username = '%s'", token, s, gcmId, username);
+                insert = String.format("update sessions set username = '%s', token = '%s', tokenExpiration = '%s', gcmId = '%s' where deviceId = '%s'", username, token, s, gcmId, deviceId);
             }
             Statement stmt = c.createStatement();
             stmt.execute(insert);
@@ -112,10 +112,10 @@ public class DBController {
         }
     }
 
-    public boolean userExistsInDB(String id) {
+    public boolean deviceIdExistsInDB(String id) {
         try {
             Statement stmt = c.createStatement();
-            String get = "select * from sessions where userId = \'" + id + "\';";
+            String get = "select * from sessions where deviceId = \'" + id + "\';";
             ResultSet set = stmt.executeQuery(get);
             return set.next();
         } catch (Exception e) {
@@ -141,10 +141,10 @@ public class DBController {
         }
     }
 
-    public boolean updatePosition(String id, String username, double lat, double longi, String gcmId){
-        if(userExistsInDB(id))
+    public boolean updatePosition(String deviceId, String id, String username, double lat, double longi, String gcmId){
+        if(deviceIdExistsInDB(deviceId))
             try {
-                String update = "update sessions set latitude = " + lat + ", longitude = " + longi + ", gcmId = '" + gcmId +  "', username = '" + username + "' where userId = '" + id + "'";
+                String update = "update sessions set latitude = " + lat + ", longitude = " + longi + ", gcmId = '" + gcmId +  "', username = '" + username + "' where deviceId = '" + deviceId + "'";
                 Statement stmt = c.createStatement();
                 stmt.execute(update);
                 return true;
@@ -168,15 +168,15 @@ public class DBController {
         }
     }
 
-    public Session buildSession(String id){
+    public LinkedList<Session> buildSession(String id){
         try {
+            LinkedList<Session> ret = new LinkedList<>();
             String select = "select deviceId, username, gcmId, latitude, longitude from sessions where userId = '" + id + "'";
             Statement stmt = c.createStatement();
             ResultSet set = stmt.executeQuery(select);
-            if(set.next())
-                return new Session(null, null, id, set.getString(2).trim(), set.getString(3).trim(), null, set.getDouble(4), set.getDouble(5));
-            else
-                return null;
+            while(set.next())
+                ret.add(new Session(null, null, id, set.getString(2).trim(), set.getString(3).trim(), null, set.getDouble(4), set.getDouble(5)));
+            return ret;
         } catch (SQLException e){
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());

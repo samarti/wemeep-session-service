@@ -79,27 +79,29 @@ public class Server {
         put("/position", (request, response) -> {
             Session retMap = new Gson().fromJson(request.body(), Session.class);
             JsonObject res = new JsonObject();
-            if(retMap.lat != 0.0 && retMap.longi != 0.0 && retMap.gcmid != null && retMap.id != null && retMap.username != null)
-                res.addProperty("Success", SessionController.updatePosition(retMap.id, retMap.username, retMap.lat, retMap.longi, retMap.gcmid));
+            if(retMap.deviceid != null && retMap.lat != 0.0 && retMap.longi != 0.0 && retMap.gcmid != null && retMap.id != null && retMap.username != null)
+                res.addProperty("Success", SessionController.updatePosition(retMap.deviceid, retMap.id, retMap.username, retMap.lat, retMap.longi, retMap.gcmid));
             else
-                res.addProperty("Error", "Missing fields. id, username, lat, longi and gcmid required");
+                res.addProperty("Error", "Missing fields. id, deviceId, username, lat, longi and gcmid required");
             response.body(res.toString());
             return response.body();
         });
 
         get("/session/:id", (request, response) -> {
             String id = request.params(":id");
-            JsonObject res = new JsonObject();
-            Session ses = SessionController.buildSession(id);
-            if(ses != null){
+            JsonArray arr = new JsonArray();
+            LinkedList<Session> sesArr = SessionController.buildSession(id);
+            for(Session ses : sesArr){
+                JsonObject res = new JsonObject();
                 res.addProperty("latitude", ses.lat);
                 res.addProperty("longitude", ses.longi);
                 res.addProperty("username", ses.username);
                 res.addProperty("userId", ses.id);
                 res.addProperty("gcmId", ses.gcmid);
-            } else
-                res.addProperty("Error", "Invalid userId");
-            response.body(res.toString());
+                res.addProperty("deviceId", ses.deviceid);
+                arr.add(res);
+            }
+            response.body(arr.toString());
             return response.body();
         });
 
@@ -128,6 +130,7 @@ public class Server {
                     aux.addProperty("username", ses.username);
                     aux.addProperty("userId", ses.id);
                     aux.addProperty("gcmId", ses.gcmid);
+                    aux.addProperty("deviceId", ses.deviceid);
                     ret.add(aux);
                 }
             }
