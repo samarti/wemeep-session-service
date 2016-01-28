@@ -40,7 +40,7 @@ public class DBController {
                             "postgres", "postgres");
             Statement stmt = c.createStatement();
             String sessionTable = "create table if not exists sessions (id SERIAL primary key, userId char(50) unique not null," +
-                    " username char(20) unique not null, deviceId char(50), token char(50) unique, tokenExpiration Timestamp, latitude double precision, longitude double precision" +
+                    " username char(20) not null, deviceId char(50) unique not null, token char(50) unique, tokenExpiration Timestamp, latitude double precision, longitude double precision" +
                     ", gcmId char (257) unique)";
             stmt.execute(sessionTable);
         } catch (Exception e) {
