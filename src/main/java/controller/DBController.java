@@ -144,7 +144,7 @@ public class DBController {
     public boolean updatePosition(String deviceId, String id, String username, double lat, double longi, String gcmId){
         if(deviceIdExistsInDB(deviceId))
             try {
-                String update = "update sessions set deviceId = " + deviceId + ", latitude = " + lat + ", longitude = " + longi + ", gcmId = '" + gcmId +  "', username = '" + username + "' where deviceId = '" + deviceId + "'";
+                String update = "update sessions set deviceId = '" + deviceId + "', latitude = " + lat + ", longitude = " + longi + ", gcmId = '" + gcmId +  "', username = '" + username + "' where deviceId = '" + deviceId + "'";
                 Statement stmt = c.createStatement();
                 stmt.execute(update);
                 return true;
