@@ -39,7 +39,7 @@ public class DBController {
                     //.getConnection("jdbc:postgresql://192.168.99.100:49162/postgres",
                             "postgres", "postgres");
             Statement stmt = c.createStatement();
-            String sessionTable = "create table if not exists sessions (id SERIAL primary key, userId char(50) unique not null," +
+            String sessionTable = "create table if not exists sessions (id SERIAL primary key, userId char(50) not null," +
                     " username char(20) not null, deviceId char(50) unique not null, token char(50) unique, tokenExpiration Timestamp, latitude double precision, longitude double precision" +
                     ", gcmId char (257) unique)";
             stmt.execute(sessionTable);
@@ -202,7 +202,7 @@ public class DBController {
         try {
             String delete = "delete from sessions where deviceId = '" + deviceId + "'";
             Statement stmt = c.createStatement();
-            stmt.executeQuery(delete);
+            stmt.executeUpdate(delete);
             return true;
         } catch (SQLException e){
             e.printStackTrace();
