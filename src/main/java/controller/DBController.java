@@ -144,7 +144,7 @@ public class DBController {
     public boolean updatePosition(String deviceId, String id, String username, double lat, double longi, String gcmId){
         if(deviceIdExistsInDB(deviceId))
             try {
-                String update = "update sessions set latitude = " + lat + ", longitude = " + longi + ", gcmId = '" + gcmId +  "', username = '" + username + "' where deviceId = '" + deviceId + "'";
+                String update = "update sessions set deviceId = " + deviceId + "latitude = " + lat + ", longitude = " + longi + ", gcmId = '" + gcmId +  "', username = '" + username + "' where deviceId = '" + deviceId + "'";
                 Statement stmt = c.createStatement();
                 stmt.execute(update);
                 return true;
@@ -153,18 +153,16 @@ public class DBController {
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 return false;
             }
-        else {
-            try {
-                String insert = String.format("insert into sessions (userId, username, gcmId, latitude, longitude) values ('%s','%s','%s','%f','%f')"
-                        , id, username, gcmId, lat, longi);
-                Statement stmt = c.createStatement();
-                stmt.execute(insert);
-                return true;
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                return false;
-            }
+        else try {
+            String insert = String.format("insert into sessions (userId, username, gcmId, latitude, longitude, deviceId) values ('%s','%s','%s','%f','%f','%s')"
+                    , id, username, gcmId, lat, longi, deviceId);
+            Statement stmt = c.createStatement();
+            stmt.execute(insert);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
         }
     }
 
