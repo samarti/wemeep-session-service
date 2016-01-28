@@ -105,6 +105,17 @@ public class Server {
             return response.body();
         });
 
+        delete("/session/:deviceid", (request, response) -> {
+            String deviceId = request.params(":deviceid");
+            JsonObject res = new JsonObject();
+            if (SessionController.deleteSession(deviceId))
+                res.addProperty("Success", true);
+            else
+                res.addProperty("Success", false);
+            response.body(res.toString());
+            return response.body();
+        });
+
         get("/closeusers", (request, response) -> {
             double lat, longi, radius;
             try {

@@ -69,9 +69,14 @@ public class SessionController {
         return contr.updatePosition(deviceId, id, username, lat, longi, gcmId);
     }
 
-    public static LinkedList<Session> buildSession(String id){
+    public static boolean deleteSession(String deviceId){
         DBController contr = new DBController();
-        return contr.buildSession(id);
+        return contr.deleteSession(deviceId);
+    }
+
+    public static LinkedList<Session> buildSession(String deviceid){
+        DBController contr = new DBController();
+        return contr.buildSession(deviceid);
     }
 
     public static LinkedList<Session> buildSessions(){

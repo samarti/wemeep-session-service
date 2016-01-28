@@ -169,7 +169,7 @@ public class DBController {
     public LinkedList<Session> buildSession(String id){
         try {
             LinkedList<Session> ret = new LinkedList<>();
-            String select = "select deviceId, username, gcmId, latitude, longitude from sessions where userId = '" + id + "'";
+            String select = "select deviceId, username, gcmId, latitude, longitude from sessions where deviceId = '" + id + "'";
             Statement stmt = c.createStatement();
             ResultSet set = stmt.executeQuery(select);
             while(set.next())
@@ -195,6 +195,19 @@ public class DBController {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return null;
+        }
+    }
+
+    public boolean deleteSession(String deviceId){
+        try {
+            String delete = "delete from sessions where deviceId = '" + deviceId + "'";
+            Statement stmt = c.createStatement();
+            stmt.executeQuery(delete);
+            return true;
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
         }
     }
 }

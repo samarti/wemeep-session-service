@@ -60,10 +60,17 @@ Returns { "token": <someToken> }
 - Get a user session with `GET`:
 
 ```
-http://host:4567/session/id
+http://host:4567/session/deviceid
 
 Returns { <sessionJson> }
 ```
+- Delete a user session with `DELETE`:
+
+```
+http://host:4567/session/deviceid
+
+Returns { "Success": true or false}
+``
 - Get users within a given radius from a position with `GET`:
 
 ```
