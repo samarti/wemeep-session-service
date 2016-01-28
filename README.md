@@ -70,7 +70,7 @@ Returns { <sessionJson> }
 http://host:4567/session/deviceid
 
 Returns { "Success": true or false}
-``
+```
 - Get users within a given radius from a position with `GET`:
 
 ```
