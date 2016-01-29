@@ -36,7 +36,7 @@ public class DBController {
             Class.forName("org.postgresql.Driver");
             c = DriverManager
                     .getConnection("jdbc:postgresql://" + dbAddr.getHostAddress() + ":5432/postgres",
-                    //.getConnection("jdbc:postgresql://192.168.99.100:49162/postgres",
+                    //.getConnection("jdbc:postgresql://54.233.99.166:49162/postgres",
                             "postgres", "postgres");
             Statement stmt = c.createStatement();
             String sessionTable = "create table if not exists sessions (id SERIAL primary key, userId char(50) not null," +
@@ -144,7 +144,7 @@ public class DBController {
     public boolean updatePosition(String deviceId, String id, String username, double lat, double longi, String gcmId){
         if(deviceIdExistsInDB(deviceId))
             try {
-                String update = "update sessions set deviceId = '" + deviceId + "', latitude = " + lat + ", longitude = " + longi + ", gcmId = '" + gcmId +  "', username = '" + username + "' where deviceId = '" + deviceId + "'";
+                String update = "update sessions set userId = '" + id + "', latitude = " + lat + ", longitude = " + longi + ", gcmId = '" + gcmId +  "', username = '" + username + "' where deviceId = '" + deviceId + "'";
                 Statement stmt = c.createStatement();
                 stmt.execute(update);
                 return true;

@@ -61,16 +61,18 @@ public class Server {
             return response.body();
         });
 
-        get("/position", (request, response) -> {
-            Session retMap = new Gson().fromJson(request.body(), Session.class);
+        get("/position/:id", (request, response) -> {
             JsonObject res = new JsonObject();
-            String id =  retMap.id;
-            Position pos = SessionController.getPosition(id);
-            if(pos != null){
-                res.addProperty("latitude", pos.lat);
-                res.addProperty("longitude", pos.longi);
+            String id = request.params(":id");
+            if(id != null) {
+                Position pos = SessionController.getPosition(id);
+                if (pos != null) {
+                    res.addProperty("latitude", pos.lat);
+                    res.addProperty("longitude", pos.longi);
+                } else
+                    res.addProperty("Error", "Invalid userId or position has not been set for that userId");
             } else
-                res.addProperty("Error", "Invalid userId or position has not been set for that userId");
+                res.addProperty("Error", "Missing id");
             response.body(res.toString());
             return response.body();
         });

@@ -44,7 +44,7 @@ Returns { "token": <someToken> }
 - Get a user last known position with `GET`:
 
 ```
-http://host:4567/position/
+http://host:4567/position/<id>
 
 Data: { body: { token:<someToken>, userId:<someId> } }
 Returns { "token": <someToken> }
