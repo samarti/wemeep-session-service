@@ -51,7 +51,7 @@ public class DBController {
 
             String updateTrigger = " CREATE TRIGGER update_ab_changetimestamp " +
                     "BEFORE UPDATE" +
-                    "    ON ab FOR EACH ROW EXECUTE PROCEDURE " +
+                    "    ON sessions FOR EACH ROW EXECUTE PROCEDURE " +
                     "    update_changetimestamp_column();";
 
             String setTimezone = "set Timezone = 'America/Santiago'";
