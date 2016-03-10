@@ -90,6 +90,7 @@ Returns [{<sessionJson>}, {<sessionJson>}, ...]
 | deviceId    | String    |
 | token       | String    |
 | tokenExpiration | Timestamp|
+| updatedAt   | Timestamp|
 | latitude    | Decimal |
 | longitude   | Decimal |
 | gcmid       | String  |

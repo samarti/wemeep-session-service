@@ -8,10 +8,10 @@ import java.sql.Timestamp;
 public class Session {
 
     public String token, deviceid, id, username, gcmid;
-    public Timestamp expirationDate;
+    public Timestamp expirationDate, updatedAt;
     public double lat, longi;
 
-    public Session(String token, String deviceid, String id, String username, String gcmid, Timestamp expirationDate, double lat, double longi) {
+    public Session(String token, String deviceid, String id, String username, String gcmid, Timestamp updatedAt, Timestamp expirationDate, double lat, double longi) {
         this.token = token;
         this.deviceid = deviceid;
         this.id = id;
@@ -20,5 +20,6 @@ public class Session {
         this.expirationDate = expirationDate;
         this.lat = lat;
         this.longi = longi;
+        this.updatedAt = updatedAt;
     }
 }

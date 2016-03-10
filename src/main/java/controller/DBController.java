@@ -41,8 +41,24 @@ public class DBController {
             Statement stmt = c.createStatement();
             String sessionTable = "create table if not exists sessions (id SERIAL primary key, userId char(50) not null," +
                     " username char(20) not null, deviceId char(50) unique not null, token char(50) unique, tokenExpiration Timestamp, latitude double precision, longitude double precision" +
-                    ", gcmId char (257) unique)";
+                    ", gcmId char (257) unique, updatedat Timestamp with time zone DEFAULT ('now'::text)::date)";
+            String updateFunction = "CREATE OR REPLACE FUNCTION update_changetimestamp_column() " +
+                    "RETURNS TRIGGER AS $$ " +
+                    "BEGIN NEW.updatedAt = now();  " +
+                    "RETURN NEW; " +
+                    "END; " +
+                    "$$ language 'plpgsql';";
+
+            String updateTrigger = " CREATE TRIGGER update_ab_changetimestamp " +
+                    "BEFORE UPDATE" +
+                    "    ON ab FOR EACH ROW EXECUTE PROCEDURE " +
+                    "    update_changetimestamp_column();";
+
+            String setTimezone = "set Timezone = 'America/Santiago'";
             stmt.execute(sessionTable);
+            stmt.execute(updateFunction);
+            stmt.execute(updateTrigger);
+            stmt.execute(setTimezone);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -173,7 +189,7 @@ public class DBController {
             Statement stmt = c.createStatement();
             ResultSet set = stmt.executeQuery(select);
             while(set.next())
-                ret.add(new Session(null, null, id, set.getString(2).trim(), set.getString(3).trim(), null, set.getDouble(4), set.getDouble(5)));
+                ret.add(new Session(null, null, id, set.getString(2).trim(), set.getString(3).trim(), null, null, set.getDouble(4), set.getDouble(5)));
             return ret;
         } catch (SQLException e){
             e.printStackTrace();
@@ -189,7 +205,7 @@ public class DBController {
             ResultSet set = stmt.executeQuery(select);
             LinkedList<Session> ret = new LinkedList<>();
             while(set.next())
-                ret.add(new Session(null, null, set.getString(6), set.getString(2).trim(), set.getString(3).trim(), null, set.getDouble(4), set.getDouble(5)));
+                ret.add(new Session(null, null, set.getString(6), set.getString(2).trim(), set.getString(3).trim(), null, null, set.getDouble(4), set.getDouble(5)));
             return ret;
         } catch (SQLException e){
             e.printStackTrace();
