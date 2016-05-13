@@ -23,7 +23,7 @@ public class Server {
 
         DBController controller = new DBController();
         controller.init();
-
+        port(4568);
 
         get("/", (request, response) -> "WeMeep Session Service");
 
